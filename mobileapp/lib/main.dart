@@ -29,17 +29,17 @@ final theme = ThemeData().copyWith(
 );
 
 void main() {
-  runApp(App());
+  runApp(const App());
 }
 
 class App extends StatelessWidget {
+  const App({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: theme,
-      home: const LoginScreen(
-
-      ),
+      home: const LoginScreen(),
     );
   }
 }
