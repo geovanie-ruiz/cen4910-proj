@@ -176,13 +176,17 @@ class _LoginState extends State<LoginPage> {
             height: 30,
           ),
           Center(
-            child: Text(
-              "OR",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-                color: Colors.orangeAccent.withOpacity(0.9),
-              ),
+            child: FormHelper.submitButton(
+                "SETTINGS",
+                () {
+                  //TODO implement submit login
+                  Navigator.pushNamed(context, "/settings");
+                },
+                btnColor: Colors.orange.withOpacity(0.95),
+                borderColor: Colors.deepOrange,
+                txtColor: Colors.black,
+                fontSize: 20,
+                borderRadius: 10,
             ),
           ),
           const SizedBox(

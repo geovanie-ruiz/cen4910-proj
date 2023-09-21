@@ -38,6 +38,8 @@ dependencies:
   flutter_progress_hud: ^2.0.2
   # OPTIONAL
   animated_text_kit: ^4.2.2
+  # SAVE DATA ON THE PHONE
+  shared_preferences: ^2.0.6
 
 
   # The following adds the Cupertino Icons font to your application.
