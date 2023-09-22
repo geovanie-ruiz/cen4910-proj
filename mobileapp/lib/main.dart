@@ -5,6 +5,7 @@ import 'package:mobileapp/pages/choosesave.dart';
 
 import 'package:mobileapp/pages/login.dart';
 import 'package:mobileapp/pages/createaccount.dart';
+import 'package:mobileapp/pages/selectadventure.dart';
 import 'package:mobileapp/pages/story.dart';
 import 'package:mobileapp/pages/settings.dart';
 
@@ -51,6 +52,8 @@ class App extends StatelessWidget {
           '/choosesave': (context) => const ChooseSave(),
           '/story': (context) => const Story(),
           '/settings': (context) => const SettingsPage(),
+          '/selectadventure': (context) => const SelectAdventure(),
+
         });
   }
 }

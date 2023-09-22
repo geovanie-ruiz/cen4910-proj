@@ -98,7 +98,7 @@ class ChooseSave extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, "/story");
+                      Navigator.pushNamed(context, "/selectadventure");
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.orangeAccent,
