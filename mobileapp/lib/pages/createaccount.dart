@@ -169,8 +169,45 @@ class _CreateAccountState extends State<CreateAccount> {
           Center(
             child: FormHelper.submitButton(
               "SUBMIT",
-                  () {
+              () async {
                 //TODO implement submit login
+                await showDialog<void>(
+                  context: context,
+                  builder: (context) {
+                    return Dialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      backgroundColor: Colors.orangeAccent,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: const <Widget>[
+                            Text(
+                              'Account created successfully!',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.0,
+                                /*
+                                shadows: <Shadow>[
+                                  Shadow(
+                                    offset: Offset(3.0, 3.0),
+                                    blurRadius: 5.0,
+                                    color: Color.fromARGB(255, 100, 100, 100),
+                                  ),
+                                ],
+
+                                 */
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
               },
               btnColor: Colors.orange.withOpacity(0.95),
               borderColor: Colors.deepOrange,
