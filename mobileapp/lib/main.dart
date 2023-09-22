@@ -8,6 +8,8 @@ import 'package:mobileapp/pages/createaccount.dart';
 import 'package:mobileapp/pages/selectadventure.dart';
 import 'package:mobileapp/pages/story.dart';
 import 'package:mobileapp/pages/settings.dart';
+import 'package:mobileapp/pages/jediending.dart';
+import 'package:mobileapp/pages/sithending.dart';
 
 // creates color scheme variables for theme
 final colorScheme = ColorScheme.fromSeed(
@@ -53,7 +55,8 @@ class App extends StatelessWidget {
           '/story': (context) => const Story(),
           '/settings': (context) => const SettingsPage(),
           '/selectadventure': (context) => const SelectAdventure(),
-
+          '/jediending': (context) => JediEnding(),
+          '/sithending': (context) => SithEnding(),
         });
   }
 }

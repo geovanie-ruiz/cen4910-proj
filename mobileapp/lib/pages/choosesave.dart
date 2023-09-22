@@ -17,13 +17,12 @@ class ChooseSave extends StatelessWidget {
           children: [
             Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.width/2,
+              height: MediaQuery.of(context).size.width / 2,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Align(
                     alignment: Alignment.topCenter,
-
                     child: Image.asset(
                       "assets/images/star_wars_logo4.png",
                       width: 900,
@@ -33,7 +32,6 @@ class ChooseSave extends StatelessWidget {
                 ],
               ),
             ),
-
             Padding(
               padding: EdgeInsets.only(left: 20, right: 20),
               child: Column(
@@ -56,20 +54,19 @@ class ChooseSave extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, "/story");
+                      Navigator.pushNamed(context, "/jediending");
                     },
                     style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.orangeAccent,
-                        backgroundColor: Colors.orangeAccent.withOpacity(0.8),
-                        fixedSize: const Size(450.0, 40.0),
+                      foregroundColor: Colors.orangeAccent,
+                      backgroundColor: Colors.orangeAccent.withOpacity(0.8),
+                      fixedSize: const Size(450.0, 40.0),
                     ),
                     child: const Text(
                       'Slot 1 - ACT III: GHOST OF VADER',
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 18,
-                          fontWeight: FontWeight.bold
-                      ),
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                   const SizedBox(
@@ -77,7 +74,7 @@ class ChooseSave extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, "/story");
+                      Navigator.pushNamed(context, "/sithending");
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.orangeAccent,
@@ -89,8 +86,7 @@ class ChooseSave extends StatelessWidget {
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 18,
-                          fontWeight: FontWeight.bold
-                      ),
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
                   const SizedBox(
@@ -110,18 +106,19 @@ class ChooseSave extends StatelessWidget {
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 18,
-                          fontWeight: FontWeight.bold
-                      ),
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
-                  const SizedBox(
-                    height: 75
-                  ),
+                  const SizedBox(height: 75),
                   ElevatedButton.icon(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateColor.resolveWith((states) => Colors.black26),
+                      backgroundColor: MaterialStateColor.resolveWith(
+                          (states) => Colors.black26),
                     ),
-                    icon: const Icon(Icons.arrow_back, color: Colors.orangeAccent,),
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: Colors.orangeAccent,
+                    ),
                     label: const Text(
                       'Return to Login',
                       style: TextStyle(
@@ -136,7 +133,6 @@ class ChooseSave extends StatelessWidget {
                 ],
               ),
             ),
-
           ],
         ),
       ),
