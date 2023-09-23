@@ -9,7 +9,7 @@ class SelectAdventure extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(
-      style: TextStyle(color: Colors.orangeAccent),
+      style: const TextStyle(color: Colors.orangeAccent),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -35,7 +35,7 @@ class SelectAdventure extends StatelessWidget {
             ),
 
             Padding(
-              padding: EdgeInsets.only(left: 20, right: 20),
+              padding: const EdgeInsets.only(left: 20, right: 20),
               child: Column(
                 children: [
                   const SizedBox(
