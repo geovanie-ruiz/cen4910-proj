@@ -8,7 +8,7 @@ import { CampaignDto } from './dto/campaign.dto';
 export class CampaignController {
   constructor(private campaignService: CampaignService) {}
 
-  @Get('')
+  @Get('/all')
   @ApiBearerAuth()
   @ApiOkResponse({
     description: 'A list of all the campaign builds',
