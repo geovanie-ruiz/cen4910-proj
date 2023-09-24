@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { UserEntity } from './users/entity/user.entity';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
+import { UserSaveEntity } from './users/entity/save.entity';
 
 @Module({
   imports: [
@@ -25,7 +26,7 @@ import { AuthGuard } from './auth/auth.guard';
         username: configService.get('POSTGRES_USER'),
         password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_DATABASE'),
-        entities: [UserEntity],
+        entities: [UserEntity, UserSaveEntity],
         synchronize: true,
       }),
     }),

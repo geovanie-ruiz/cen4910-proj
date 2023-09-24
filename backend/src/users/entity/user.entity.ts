@@ -1,6 +1,7 @@
-import { BeforeInsert, Column, Entity } from 'typeorm';
+import { BeforeInsert, Column, Entity, OneToMany } from 'typeorm';
 import { hash } from 'bcrypt';
 import { AbstractEntity } from 'src/common/abstract.entity';
+import { UserSaveEntity } from './save.entity';
 
 @Entity('user')
 export class UserEntity extends AbstractEntity {
@@ -22,6 +23,9 @@ export class UserEntity extends AbstractEntity {
     nullable: false,
   })
   email: string;
+
+  @OneToMany(() => UserSaveEntity, (save) => save.user)
+  saves: UserSaveEntity[];
 
   @BeforeInsert() async hashPassword() {
     this.password = await hash(this.password, 10);
