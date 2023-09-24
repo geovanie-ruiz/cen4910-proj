@@ -19,7 +19,15 @@ Create a game where the users sign in (security) and play a game where the chara
 
 I have placed you in three groups.  Please discuss with each other and decide which group will be assigned the backend, or UI Website, or UI mobile app.
 
-## Installation
+## Backend
+Reference backend readme for more detail. This is a Quickstart for the backend portion of the application to run locally. 
+
+### Prerequisites
+* PostgreSQL
+* NodeJs
+* Npm
+
+### Installation
 Once the project has been downloaded, use the following to install necessary libraries. Note: Command must be ran from within the backend directory. If you're in the project root (cen4910-proj) then you'll need to change directories.
 
 ```bash
@@ -27,16 +35,20 @@ $ cd backend # if you're in the project root
 $ npm install
 ```
 
-## Setup
-Install PostgreSQL on your workstation. When prompted for root password, be sure to enter something you'll be able to remember. That password will need to be entered into the .env file or the server will not connect to the database. Once postgres is set up, the tables need to be created. This process is automated by TypeORM using migrations. To create your tables:
+### Setup
+Install PostgreSQL on your workstation. When prompted for root password, be sure to enter something you'll be able to remember. That password will need to be entered into the .env file or the server will not connect to the database. Once postgres is set up, the tables need to be created. This process is automated by the server via syncing but this is not recommended for production environments. Migrations are meant to be used to build the database schema. Fixtures files would be needed, too, in order to seed data.
 
-```bash
-$ npm run typeorm:run-migrations
-```
-
-## Running the application
+### Running the application
 Once your libraries are installed and postgres is setup, you can run the server using the following command:
 
 ```bash
 $ npm run start:dev
 ```
+
+### Testing
+Join the Postman Workspace to access the pre-built test requests.
+
+https://app.getpostman.com/join-team?invite_code=8ce2b7c5553938d7c0cbc1c3e1fedd89&target_code=8dbe2885847208e01248d53fe02d3335
+
+### Notes
+The .env file included is a sample. You can follow along with it for the Postgres install or do your own thing. Typically this file is not added to a repository as it'll usually house very sensitive data, like keys or service accounts.
