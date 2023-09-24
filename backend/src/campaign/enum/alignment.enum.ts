@@ -1,6 +1,6 @@
 export enum StarWarsAlignment {
-  LightSide,
-  DarkSide,
+  LightSide = 'Light Side',
+  DarkSide = 'Dark Side',
 }
 
 export enum DungeonsDragonsAlignment {
