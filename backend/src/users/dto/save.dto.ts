@@ -10,6 +10,9 @@ export class ChoiceDto {
 
 export class SaveDto {
   @IsNotEmpty()
+  filename: string;
+
+  @IsNotEmpty()
   campaign_id: number;
 
   @IsNotEmpty()

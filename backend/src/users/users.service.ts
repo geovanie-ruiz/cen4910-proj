@@ -42,6 +42,7 @@ export class UsersService {
       });
 
       const saveDataDto: SaveDto = {
+        filename: save.filename,
         campaign_id,
         choices: choicesDto,
       };
