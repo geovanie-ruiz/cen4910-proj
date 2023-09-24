@@ -6,12 +6,16 @@ import { UserEntity } from './entity/user.entity';
 import { CreateUserDto } from './dto/user.create.dto';
 import { LoginUserDto } from './dto/user-login.dto';
 import { compare } from 'bcrypt';
+import { UserSaveEntity } from './entity/save.entity';
+import { ChoiceDto, SaveDto } from './dto/save.dto';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepo: Repository<UserEntity>,
+    @InjectRepository(UserSaveEntity)
+    private readonly userSaveRepo: Repository<UserSaveEntity>,
   ) {}
 
   private toUserDto(data: UserEntity): UserDto {
@@ -22,6 +26,30 @@ export class UsersService {
       email,
     };
     return userDto;
+  }
+
+  private toSaveDtoList(data: UserSaveEntity[]): SaveDto[] {
+    const saveData: SaveDto[] = data.map((save) => {
+      const { campaign_id, choices } = save.save_data;
+
+      const choicesDto: ChoiceDto[] = choices.map((choice) => {
+        const { question_id, answer_id } = choice;
+        const choiceDto: ChoiceDto = {
+          question_id,
+          answer_id,
+        };
+        return choiceDto;
+      });
+
+      const saveDataDto: SaveDto = {
+        campaign_id,
+        choices: choicesDto,
+      };
+
+      return saveDataDto;
+    });
+
+    return saveData;
   }
 
   private async comparePasswords(password: string, hash: string) {
@@ -60,5 +88,19 @@ export class UsersService {
 
     await this.userRepo.save(user);
     return this.toUserDto(user);
+  }
+
+  async getSaveFiles(userId: number): Promise<SaveDto[]> {
+    const user = await this.userRepo.findOne({ where: { id: userId } });
+
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.UNAUTHORIZED);
+    }
+
+    const saveData = await this.userSaveRepo.find({
+      where: { user: { id: userId } },
+    });
+
+    return this.toSaveDtoList(saveData);
   }
 }
