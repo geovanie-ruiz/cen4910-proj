@@ -1,6 +1,6 @@
 import { BeforeInsert, Column, Entity, OneToMany } from 'typeorm';
 import { hash } from 'bcrypt';
-import { AbstractEntity } from 'src/common/abstract.entity';
+import { AbstractEntity } from '../../common/abstract.entity';
 import { UserSaveEntity } from './save.entity';
 
 @Entity('user')

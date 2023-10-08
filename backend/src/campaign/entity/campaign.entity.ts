@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 import { QuestionEntity } from './question.entity';
-import { AbstractEntity } from 'src/common/abstract.entity';
+import { AbstractEntity } from '../../common/abstract.entity';
 
 @Entity('campaign')
 export class CampaignEntity extends AbstractEntity {

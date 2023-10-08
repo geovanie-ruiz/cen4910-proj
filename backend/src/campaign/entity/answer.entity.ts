@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
-import { AbstractEntity } from 'src/common/abstract.entity';
+import { AbstractEntity } from '../../common/abstract.entity';
 import { StarWarsAlignment } from '../enum/alignment.enum';
 import { QuestionEntity } from './question.entity';
 
