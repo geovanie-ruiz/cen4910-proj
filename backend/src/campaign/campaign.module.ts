@@ -9,6 +9,7 @@ import { AnswerEntity } from './entity/answer.entity';
 @Module({
   imports: [
     TypeOrmModule.forFeature([CampaignEntity, QuestionEntity, AnswerEntity]),
+    CampaignService,
   ],
   controllers: [CampaignController],
   providers: [CampaignService],

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { LoginUserDto } from 'src/users/dto/user-login.dto';
-import { CreateUserDto } from 'src/users/dto/user.create.dto';
+import { LoginUserDto } from '../users/dto/user-login.dto';
+import { CreateUserDto } from '../users/dto/user.create.dto';
 
 export interface LoginStatus {
   username: string;

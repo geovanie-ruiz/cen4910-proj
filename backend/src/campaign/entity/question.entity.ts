@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, ManyToOne } from 'typeorm';
-import { AbstractEntity } from 'src/common/abstract.entity';
+import { AbstractEntity } from '../../common/abstract.entity';
 import { CampaignEntity } from './campaign.entity';
 import { AnswerEntity } from './answer.entity';
 
