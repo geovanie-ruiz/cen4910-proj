@@ -54,6 +54,7 @@ const saveArray = [
 ];
 
 const oneUser = {
+  id: 1,
   username: 'a_user1',
   password: 'a_password1',
   email: 'email_1@inbox.com',
@@ -90,7 +91,7 @@ describe('UsersService', () => {
           provide: getRepositoryToken(UserEntity),
           useValue: {
             find: jest.fn().mockResolvedValue(userArray),
-            findOneBy: jest.fn().mockResolvedValue(oneUser),
+            findOne: jest.fn().mockResolvedValue(oneUser),
             save: jest.fn().mockResolvedValue(oneUser),
             remove: jest.fn(),
             delete: jest.fn(),
@@ -100,7 +101,7 @@ describe('UsersService', () => {
           provide: getRepositoryToken(UserSaveEntity),
           useValue: {
             find: jest.fn().mockResolvedValue(saveArray),
-            findOneBy: jest.fn().mockResolvedValue(oneSave),
+            findOne: jest.fn().mockResolvedValue(oneSave),
             save: jest.fn().mockResolvedValue(oneSave),
             remove: jest.fn(),
             delete: jest.fn(),

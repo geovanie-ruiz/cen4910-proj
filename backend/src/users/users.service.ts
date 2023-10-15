@@ -18,7 +18,7 @@ export class UsersService {
     private readonly userSaveRepo: Repository<UserSaveEntity>,
   ) {}
 
-  private toUserDto(data: UserEntity): UserDto {
+  toUserDto(data: UserEntity): UserDto {
     const { id, username, email } = data;
     const userDto: UserDto = {
       id,
@@ -28,7 +28,7 @@ export class UsersService {
     return userDto;
   }
 
-  private toSaveDtoList(data: UserSaveEntity[]): SaveDto[] {
+  toSaveDtoList(data: UserSaveEntity[]): SaveDto[] {
     const saveData: SaveDto[] = data.map((save) => {
       const { campaign_id, choices } = save.save_data;
 
@@ -53,7 +53,7 @@ export class UsersService {
     return saveData;
   }
 
-  private async comparePasswords(password: string, hash: string) {
+  async comparePasswords(password: string, hash: string) {
     return await compare(password, hash);
   }
 
