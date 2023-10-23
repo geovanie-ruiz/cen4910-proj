@@ -1,0 +1,503 @@
+{
+	"info": {
+		"_postman_id": "94687d99-2494-4fb2-82ea-bd5ba361abc8",
+		"name": "Internal API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18027559",
+		"_collection_link": "https://planetary-crescent-803265.postman.co/workspace/ProjectSkywalker~abc27b8d-63da-4e12-bca8-d3699506ac26/collection/18027559-94687d99-2494-4fb2-82ea-bd5ba361abc8?action=share&source=collection_link&creator=18027559"
+	},
+	"item": [
+		{
+			"name": "Public",
+			"item": [
+				{
+					"name": "Get AccessToken",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create New User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"admin\",\n  \"password\": \"password\",\n  \"email\": \"admin@email.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Private",
+			"item": [
+				{
+					"name": "Saving",
+					"item": [
+						{
+							"name": "Get Save Files",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..aH2oLkmW8y8PLNcUXHwPcNlDOf5BzwpsOzJJD3-IuNE",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/users/1/saves",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"1",
+										"saves"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Save Instance",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..aH2oLkmW8y8PLNcUXHwPcNlDOf5BzwpsOzJJD3-IuNE",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/users/1/saves",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"1",
+										"saves"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Save File",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..aH2oLkmW8y8PLNcUXHwPcNlDOf5BzwpsOzJJD3-IuNE",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/users/save/new",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"save",
+										"new"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Existing Save File",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..aH2oLkmW8y8PLNcUXHwPcNlDOf5BzwpsOzJJD3-IuNE",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/users/save/new",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"save",
+										"new"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Character",
+					"item": [
+						{
+							"name": "Get Initial Characters",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..aH2oLkmW8y8PLNcUXHwPcNlDOf5BzwpsOzJJD3-IuNE",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/users/1/saves",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"1",
+										"saves"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Character By ID",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..aH2oLkmW8y8PLNcUXHwPcNlDOf5BzwpsOzJJD3-IuNE",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/users/1/saves",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"1",
+										"saves"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Character Bio By ID",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..aH2oLkmW8y8PLNcUXHwPcNlDOf5BzwpsOzJJD3-IuNE",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/users/1/saves",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"1",
+										"saves"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Character",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..aH2oLkmW8y8PLNcUXHwPcNlDOf5BzwpsOzJJD3-IuNE",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/users/1/saves",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"1",
+										"saves"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Campaign Data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..aH2oLkmW8y8PLNcUXHwPcNlDOf5BzwpsOzJJD3-IuNE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/users/1/saves",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"1",
+								"saves"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Campaign Instance",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..aH2oLkmW8y8PLNcUXHwPcNlDOf5BzwpsOzJJD3-IuNE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/users/1/saves",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"1",
+								"saves"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh A Token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..aH2oLkmW8y8PLNcUXHwPcNlDOf5BzwpsOzJJD3-IuNE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/users/1/saves",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"1",
+								"saves"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

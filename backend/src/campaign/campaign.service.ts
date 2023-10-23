@@ -27,8 +27,6 @@ export class CampaignService {
     const { id, name, views } = data;
 
     const viewsData: ViewDto[] = views.map((view) => {
-      console.log(view);
-
       const { sequence_id, content_type, content } = view;
 
       let contentData: ContentExpositionDto | ContentChallengeDto;
@@ -44,7 +42,7 @@ export class CampaignService {
 
           if (content.challenge.type === ChallengeType.Check) {
             actionDto = {
-              id: action.id,
+              id: action.choice_id,
               label: action.label,
               score: action.score,
               pass: action.pass,
@@ -52,7 +50,7 @@ export class CampaignService {
             };
           } else if (content.challenge.type === ChallengeType.Choice) {
             actionDto = {
-              id: action.id,
+              id: action.choice_id,
               label: action.label,
               alignment: action.alignment.toString(),
               next: action.next,
