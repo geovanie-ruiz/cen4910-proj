@@ -9,8 +9,12 @@ import { AuthGuard } from './auth/auth.guard';
 import { UserSaveEntity } from './users/entity/save.entity';
 import { CampaignModule } from './campaign/campaign.module';
 import { CampaignEntity } from './campaign/entity/campaign.entity';
-import { QuestionEntity } from './campaign/entity/question.entity';
-import { AnswerEntity } from './campaign/entity/answer.entity';
+import { ViewEntity } from './campaign/entity/view.entity';
+import { ContentEntity } from './campaign/entity/content.entity';
+import { ChallengeEntity } from './campaign/entity/challenge.entity';
+import { ActionEntity } from './campaign/entity/action.entity';
+import { CharacterEntity } from './users/entity/character.entity';
+import { RefreshToken } from './users/entity/token.entity';
 
 @Module({
   imports: [
@@ -32,8 +36,12 @@ import { AnswerEntity } from './campaign/entity/answer.entity';
           UserEntity,
           UserSaveEntity,
           CampaignEntity,
-          QuestionEntity,
-          AnswerEntity,
+          ViewEntity,
+          ContentEntity,
+          ChallengeEntity,
+          ActionEntity,
+          CharacterEntity,
+          RefreshToken,
         ],
         synchronize: true,
       }),

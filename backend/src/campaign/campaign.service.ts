@@ -1,73 +1,132 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CampaignEntity } from './entity/campaign.entity';
 import { Repository } from 'typeorm';
-import { QuestionEntity } from './entity/question.entity';
-import { AnswerEntity } from './entity/answer.entity';
+import { CampaignEntity } from './entity/campaign.entity';
 import { CampaignDto } from './dto/campaign.dto';
-import { QuestionDto } from './dto/question.dto';
-import { AnswerDto } from './dto/answer.dto';
+import { ViewDto } from './dto/view.dto';
+import { ContentExpositionDto } from './dto/content-exposition.dto';
+import { ContentChallengeDto } from './dto/content-challenge.dto';
+import { Action, ChallengeDto } from './dto/challenge.dto';
+import { ActionCheckDto } from './dto/action-check.dto';
+import { ActionChoiceDto } from './dto/action-choice.dto';
+import { ContentType } from './enum/content.enum';
+import { ChallengeType } from './enum/challenge.enum';
 
 @Injectable()
 export class CampaignService {
   constructor(
     @InjectRepository(CampaignEntity)
     private readonly campaignRepo: Repository<CampaignEntity>,
-    @InjectRepository(QuestionEntity)
-    private readonly questionRepo: Repository<QuestionEntity>,
-    @InjectRepository(AnswerEntity)
-    private readonly answerRepo: Repository<AnswerEntity>,
   ) {}
 
-  private toCampaignDto(data: CampaignEntity[]): CampaignDto[] {
-    const campaignData: CampaignDto[] = data.map((campaign) => {
-      const { id, name, questions } = campaign;
+  private normalizeToCampaignDto(data: CampaignEntity[]): CampaignDto[] {
+    return data.map((campaign) => this.toCampaignDto(campaign));
+  }
 
-      const questionsData: QuestionDto[] = questions.map((question) => {
-        const { id, text, answers } = question;
+  private toCampaignDto(data: CampaignEntity): CampaignDto {
+    const { id, name, views } = data;
 
-        const answersData: AnswerDto[] = answers.map((answer) => {
-          const { id, text, score, alignment } = answer;
+    const viewsData: ViewDto[] = views.map((view) => {
+      console.log(view);
 
-          const answerDto: AnswerDto = {
-            id,
-            text,
-            score,
-            alignment,
-          };
+      const { sequence_id, content_type, content } = view;
 
-          return answerDto;
+      let contentData: ContentExpositionDto | ContentChallengeDto;
+
+      if (content_type === ContentType.Exposition) {
+        contentData = {
+          exposition: content.exposition,
+          next: content.next,
+        };
+      } else if (content_type === ContentType.Challenge) {
+        const actionData: Action[] = content.challenge.actions.map((action) => {
+          let actionDto: ActionCheckDto | ActionChoiceDto;
+
+          if (content.challenge.type === ChallengeType.Check) {
+            actionDto = {
+              id: action.id,
+              label: action.label,
+              score: action.score,
+              pass: action.pass,
+              fail: action.fail,
+            };
+          } else if (content.challenge.type === ChallengeType.Choice) {
+            actionDto = {
+              id: action.id,
+              label: action.label,
+              alignment: action.alignment.toString(),
+              next: action.next,
+            };
+          }
+
+          return actionDto;
         });
 
-        const questionDto: QuestionDto = {
-          id,
-          text,
-          answers: answersData,
+        const challenge: ChallengeDto = {
+          text: content.challenge.text,
+          type: content.challenge.type,
+          actions: actionData,
         };
 
-        return questionDto;
-      });
+        contentData = {
+          challenge,
+        };
+      }
 
-      const campaignDto: CampaignDto = {
-        id,
-        name,
-        questions: questionsData,
+      const viewDto: ViewDto = {
+        sequence_id: sequence_id,
+        content_type,
+        content: contentData,
       };
 
-      return campaignDto;
+      return viewDto;
     });
 
-    return campaignData;
+    const campaignDto: CampaignDto = {
+      id,
+      name,
+      views: viewsData,
+    };
+
+    return campaignDto;
   }
 
   async getAllCampaigns(): Promise<CampaignDto[]> {
     const campaigns = await this.campaignRepo.find({
       relations: {
-        questions: {
-          answers: true,
+        views: {
+          content: {
+            challenge: {
+              actions: true,
+            },
+          },
         },
       },
     });
-    return this.toCampaignDto(campaigns);
+
+    return this.normalizeToCampaignDto(campaigns);
+  }
+
+  async getCampaignById(id: number): Promise<CampaignDto> {
+    const campaign = await this.campaignRepo.findOne({
+      where: {
+        id: id,
+      },
+      relations: {
+        views: {
+          content: {
+            challenge: {
+              actions: true,
+            },
+          },
+        },
+      },
+    });
+
+    if (!campaign) {
+      throw new HttpException('Campaign not found', HttpStatus.BAD_REQUEST);
+    }
+
+    return this.toCampaignDto(campaign);
   }
 }

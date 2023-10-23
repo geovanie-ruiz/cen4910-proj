@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNotEmpty } from 'class-validator';
-import { QuestionDto } from './question.dto';
+import { ViewDto } from './view.dto';
 
 export class CampaignDto {
   @ApiProperty({ description: 'Primary identifier for the campaign.' })
@@ -12,10 +12,10 @@ export class CampaignDto {
   name: string;
 
   @ApiProperty({
-    description: 'List of choices for the user to make during the campaign.',
-    type: [QuestionDto],
+    description: 'List of views played out for the campaign.',
+    type: [ViewDto],
   })
   @IsNotEmpty()
   @IsArray()
-  questions: QuestionDto[];
+  views: ViewDto[];
 }
