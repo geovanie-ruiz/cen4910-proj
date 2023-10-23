@@ -38,6 +38,8 @@ $ npm install
 ### Setup
 Install PostgreSQL on your workstation. When prompted for root password, be sure to enter something you'll be able to remember. That password will need to be entered into the .env file or the server will not connect to the database. Once postgres is set up, the tables need to be created. This process is automated by the server via syncing but this is not recommended for production environments. Migrations are meant to be used to build the database schema. Fixtures files would be needed, too, in order to seed data.
 
+Update: An export of test data has been dropped into the test folder. If you restore this data you'll be able to see data returned from postman testing.
+
 ### Running the application
 Once your libraries are installed and postgres is setup, you can run the server using the following command:
 
@@ -49,6 +51,8 @@ $ npm run start:dev
 Join the Postman Workspace to access the pre-built test requests.
 
 https://app.getpostman.com/join-team?invite_code=8ce2b7c5553938d7c0cbc1c3e1fedd89&target_code=8dbe2885847208e01248d53fe02d3335
+
+Update: The Postman workspace is full. I've dropped the workspace into the test folder. You can import the project from there into postman to test. Keep in mind that a user needs to be created, and the access token needs to be set up as a bearer token in the header. This should already be done but the token will need to be updated as it expires every 15 minutes.
 
 ### Notes
 The .env file included is a sample. You can follow along with it for the Postgres install or do your own thing. Typically this file is not added to a repository as it'll usually house very sensitive data, like keys or service accounts.
