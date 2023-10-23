@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany } from 'typeorm';
-import { QuestionEntity } from './question.entity';
+import { ViewEntity } from './view.entity';
 import { AbstractEntity } from '../../common/abstract.entity';
 
 @Entity('campaign')
@@ -11,6 +11,8 @@ export class CampaignEntity extends AbstractEntity {
   })
   name: string;
 
-  @OneToMany(() => QuestionEntity, (question) => question.campaign)
-  questions: QuestionEntity[];
+  @OneToMany(() => ViewEntity, (view) => view.campaign, {
+    eager: true,
+  })
+  views: ViewEntity[];
 }

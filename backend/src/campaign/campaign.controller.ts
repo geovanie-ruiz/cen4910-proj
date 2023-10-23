@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CampaignService } from './campaign.service';
 import { CampaignDto } from './dto/campaign.dto';
@@ -17,5 +17,15 @@ export class CampaignController {
   })
   async getCampaigns(): Promise<CampaignDto[]> {
     return await this.campaignService.getAllCampaigns();
+  }
+
+  @Get(':id')
+  @ApiBearerAuth()
+  @ApiOkResponse({
+    description: 'A campaign by ID if one is found',
+    type: CampaignDto,
+  })
+  async getCampaignById(@Param('id') campaignId: number): Promise<CampaignDto> {
+    return await this.campaignService.getCampaignById(campaignId);
   }
 }

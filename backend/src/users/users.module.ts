@@ -4,9 +4,20 @@ import { UserEntity } from './entity/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserSaveEntity } from './entity/save.entity';
 import { UsersController } from './users.controller';
+import { CharacterEntity } from './entity/character.entity';
+import { HttpModule } from '@nestjs/axios';
+import { RefreshToken } from './entity/token.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity, UserSaveEntity])],
+  imports: [
+    TypeOrmModule.forFeature([
+      UserEntity,
+      UserSaveEntity,
+      CharacterEntity,
+      RefreshToken,
+    ]),
+    HttpModule,
+  ],
   providers: [UsersService],
   exports: [UsersService],
   controllers: [UsersController],
