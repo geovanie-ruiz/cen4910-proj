@@ -34,6 +34,22 @@ export class ActionEntity extends AbstractEntity {
   next: number;
 
   @Column({
+    type: 'varchar',
+    nullable: false,
+    unique: false,
+    default: '',
+  })
+  personal_choice_label: string;
+
+  @Column({
+    type: 'varchar',
+    nullable: false,
+    unique: false,
+    default: '',
+  })
+  others_choice_label: string;
+
+  @Column({
     type: 'smallint',
     nullable: true,
     unique: false,
@@ -53,6 +69,38 @@ export class ActionEntity extends AbstractEntity {
     unique: false,
   })
   fail: number;
+
+  @Column({
+    type: 'varchar',
+    nullable: false,
+    unique: false,
+    default: '',
+  })
+  personal_fail: string;
+
+  @Column({
+    type: 'varchar',
+    nullable: false,
+    unique: false,
+    default: '',
+  })
+  personal_success: string;
+
+  @Column({
+    type: 'varchar',
+    nullable: false,
+    unique: false,
+    default: '',
+  })
+  others_fail: string;
+
+  @Column({
+    type: 'varchar',
+    nullable: false,
+    unique: false,
+    default: '',
+  })
+  others_success: string;
 
   @ManyToOne(() => ChallengeEntity, (challenge) => challenge.actions)
   challenge: ChallengeEntity;

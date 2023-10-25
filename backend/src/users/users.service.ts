@@ -7,26 +7,10 @@ import { CreateUserDto } from './dto/user.create.dto';
 import { LoginUserDto } from './dto/user-login.dto';
 import { compare } from 'bcrypt';
 import { UserSaveEntity } from './entity/save.entity';
-import {
-  EventAction,
-  EventCheckDto,
-  EventChoiceDto,
-  EventDto,
-  EventType,
-  SaveDto,
-} from './dto/save.dto';
+import { SaveDto } from './dto/save.dto';
 import { SaveSnapshotDto } from './dto/save-snapshot.dto';
-import {
-  Action,
-  ActionType,
-  Check,
-  Choice,
-  Event,
-  SaveFile,
-} from './interfaces/save.interface';
 import { CharacterEntity } from './entity/character.entity';
 import { CharacterDto, ClassName } from './dto/character.dto';
-import { SaveUpdateDto } from './dto/save-update.dto';
 import {
   CharacterBioDto,
   Planet,
@@ -66,42 +50,12 @@ export class UsersService {
     return userDto;
   }
 
-  toEventActionDto(action: ActionType, data: Action): EventAction {
-    if (action === 'check') {
-      const action = data as Check;
-      const checkDto: EventCheckDto = {
-        id: action.id,
-        success: action.success,
-      };
-      return checkDto;
-    } else if (action === 'choice') {
-      const action = data as Choice;
-      const choiceDto: EventChoiceDto = {
-        id: action.id,
-      };
-      return choiceDto;
-    }
-  }
-
-  toEventDto(data: Event): EventDto {
-    return {
-      sequence_id: data.sequence_id,
-      event_type: data.action_type,
-      action: this.toEventActionDto(data.action_type, data.action),
-    };
-  }
-
   toSaveDto(data: UserSaveEntity): SaveDto {
-    const historyData = data.save_data.history.map((eventVal) =>
-      this.toEventDto(eventVal),
-    );
-
     return {
       filename: data.filename,
-      campaign_id: data.save_data.campaign_id,
-      character_id: data.save_data.character_id,
-      last_sequence_id: data.save_data.last_sequence_id,
-      history: historyData,
+      campaign_id: data.campaign_id,
+      character_id: data.character_id,
+      last_sequence_id: data.last_sequence_id,
     };
   }
 
@@ -123,49 +77,6 @@ export class UsersService {
       intelligence: data.intelligence,
       luck: data.luck,
     };
-  }
-
-  toEventActionInterface(eventType: EventType, event: EventAction): Action {
-    if (eventType === 'check') {
-      const eventData: EventCheckDto = event as EventCheckDto;
-      const checkAction: Check = {
-        id: eventData.id,
-        success: eventData.success,
-      };
-      return checkAction;
-    } else if (eventType === 'choice') {
-      const eventData: EventChoiceDto = event as EventChoiceDto;
-      const checkAction: Choice = {
-        id: eventData.id,
-      };
-      return checkAction;
-    }
-  }
-
-  toEventInterface(event: EventDto): Event {
-    const actionData: Action = this.toEventActionInterface(
-      event.event_type,
-      event.action,
-    );
-    const eventData: Event = {
-      sequence_id: event.sequence_id,
-      action_type: event.event_type,
-      action: actionData,
-    };
-    return eventData;
-  }
-
-  toSaveFileInterface(save: SaveDto): SaveFile {
-    const eventData: Event[] = save.history.map((eventDto) =>
-      this.toEventInterface(eventDto),
-    );
-    const saveFile: SaveFile = {
-      campaign_id: save.campaign_id,
-      character_id: save.character_id,
-      last_sequence_id: save.last_sequence_id,
-      history: eventData,
-    };
-    return saveFile;
   }
 
   async comparePasswords(password: string, hash: string) {
@@ -278,18 +189,16 @@ export class UsersService {
 
     const userSave: UserSaveEntity = this.userSaveRepo.create({
       filename: saveDto.filename,
+      campaign_id: saveDto.campaign_id,
+      character_id: saveDto.character_id,
+      last_sequence_id: saveDto.last_sequence_id,
       user: user,
-      save_data: this.toSaveFileInterface(saveDto),
     });
 
     await this.userSaveRepo.save(userSave);
   }
 
-  async updateSaveFile(
-    user: string,
-    saveId: number,
-    saveUpdateDto: SaveUpdateDto,
-  ) {
+  async updateSaveFile(user: string, saveId: number, last_sequence_id: number) {
     const saveData = await this.userSaveRepo.findOne({
       where: { id: saveId, user: { username: user } },
     });
@@ -298,18 +207,8 @@ export class UsersService {
       throw new HttpException('Save file not found', HttpStatus.BAD_REQUEST);
     }
 
-    const filename = saveData.filename;
-    const { campaign_id, character_id } = saveData.save_data;
-
-    const saveDto: SaveDto = {
-      filename,
-      campaign_id,
-      character_id,
-      ...saveUpdateDto,
-    };
-
     await this.userSaveRepo.update(saveId, {
-      save_data: this.toSaveFileInterface(saveDto),
+      last_sequence_id: last_sequence_id,
     });
   }
 

@@ -7,6 +7,7 @@ import { ViewEntity } from './entity/view.entity';
 import { ContentEntity } from './entity/content.entity';
 import { ChallengeEntity } from './entity/challenge.entity';
 import { ActionEntity } from './entity/action.entity';
+import { ChoiceEntity } from './entity/choice.entity';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ActionEntity } from './entity/action.entity';
       ContentEntity,
       ChallengeEntity,
       ActionEntity,
+      ChoiceEntity,
     ]),
   ],
   controllers: [CampaignController],

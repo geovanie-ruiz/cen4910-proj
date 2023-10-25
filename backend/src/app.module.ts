@@ -15,6 +15,7 @@ import { ChallengeEntity } from './campaign/entity/challenge.entity';
 import { ActionEntity } from './campaign/entity/action.entity';
 import { CharacterEntity } from './users/entity/character.entity';
 import { RefreshToken } from './users/entity/token.entity';
+import { ChoiceEntity } from './campaign/entity/choice.entity';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { RefreshToken } from './users/entity/token.entity';
           ActionEntity,
           CharacterEntity,
           RefreshToken,
+          ChoiceEntity,
         ],
         synchronize: true,
       }),
