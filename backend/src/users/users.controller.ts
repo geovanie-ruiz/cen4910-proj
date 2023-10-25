@@ -44,6 +44,20 @@ export class UsersController {
     await this.userService.createSaveFile(username, saveDto);
   }
 
+  @Put('save/update')
+  @ApiBearerAuth()
+  @ApiOkResponse({
+    description: 'The save file has been updated.',
+  })
+  async updateSave(@Request() req: any, @Body() saveUpdateDto: SaveUpdateDto) {
+    const username: string = req.user.username;
+    await this.userService.updateSaveFile(
+      username,
+      saveUpdateDto.save_file_id,
+      saveUpdateDto.last_sequence_id,
+    );
+  }
+
   @Get('save/:id')
   @ApiBearerAuth()
   @ApiOkResponse({
@@ -56,20 +70,6 @@ export class UsersController {
   ): Promise<SaveDto> {
     const username: string = req.user.username;
     return await this.userService.getSaveFile(username, saveId);
-  }
-
-  @Put('save/:id')
-  @ApiBearerAuth()
-  @ApiOkResponse({
-    description: 'The save file has been updated.',
-  })
-  async updateSave(
-    @Request() req: any,
-    @Param('id') saveId: number,
-    @Body() saveUpdateDto: SaveUpdateDto,
-  ) {
-    const username: string = req.user.username;
-    await this.userService.updateSaveFile(username, saveId, saveUpdateDto);
   }
 
   @Get('character/list')

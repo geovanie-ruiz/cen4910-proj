@@ -1,23 +1,22 @@
-import { Column, Entity, ManyToOne, Unique } from 'typeorm';
+import { Column, Entity, Unique } from 'typeorm';
 import { AbstractEntity } from '../../common/abstract.entity';
-import { UserEntity } from './user.entity';
 
-@Entity('user_save')
-@Unique(['user', 'filename'])
-export class UserSaveEntity extends AbstractEntity {
-  @Column({
-    type: 'varchar',
-    nullable: false,
-    unique: false,
-  })
-  filename: string;
-
+@Entity('choice')
+@Unique('composite_key', ['campaign_id', 'sequence_id', 'character_id'])
+export class ChoiceEntity extends AbstractEntity {
   @Column({
     type: 'smallint',
     nullable: false,
     unique: false,
   })
   campaign_id: number;
+
+  @Column({
+    type: 'smallint',
+    nullable: false,
+    unique: false,
+  })
+  sequence_id: number;
 
   @Column({
     type: 'smallint',
@@ -31,8 +30,12 @@ export class UserSaveEntity extends AbstractEntity {
     nullable: false,
     unique: false,
   })
-  last_sequence_id: number;
+  choice_made_id: number;
 
-  @ManyToOne(() => UserEntity, (user) => user.saves)
-  user: UserEntity;
+  @Column({
+    type: 'boolean',
+    nullable: true,
+    unique: false,
+  })
+  is_success: boolean;
 }
