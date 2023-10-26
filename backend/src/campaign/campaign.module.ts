@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { CampaignController } from './campaign.controller';
 import { CampaignService } from './campaign.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { CampaignEntity } from './entity/campaign.entity';
-import { ViewEntity } from './entity/view.entity';
-import { ContentEntity } from './entity/content.entity';
-import { ChallengeEntity } from './entity/challenge.entity';
 import { ActionEntity } from './entity/action.entity';
+import { CampaignEntity } from './entity/campaign.entity';
+import { ChallengeEntity } from './entity/challenge.entity';
 import { ChoiceEntity } from './entity/choice.entity';
+import { ContentEntity } from './entity/content.entity';
+import { ViewEntity } from './entity/view.entity';
 
 @Module({
   imports: [
@@ -22,5 +22,6 @@ import { ChoiceEntity } from './entity/choice.entity';
   ],
   controllers: [CampaignController],
   providers: [CampaignService],
+  exports: [CampaignService],
 })
 export class CampaignModule {}

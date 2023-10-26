@@ -1,21 +1,24 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { GameStateDto } from 'src/users/dto/gamestate.dto';
 import { Repository } from 'typeorm';
-import { CampaignEntity } from './entity/campaign.entity';
-import { CampaignDto } from './dto/campaign.dto';
-import { ViewDto } from './dto/view.dto';
-import { ContentExpositionDto } from './dto/content-exposition.dto';
-import { ContentChallengeDto } from './dto/content-challenge.dto';
-import { Action, ChallengeDto } from './dto/challenge.dto';
 import { ActionCheckDto } from './dto/action-check.dto';
 import { ActionChoiceDto } from './dto/action-choice.dto';
-import { ContentType } from './enum/content.enum';
-import { ChallengeType } from './enum/challenge.enum';
+import { CampaignDto } from './dto/campaign.dto';
+import { Action, ChallengeDto } from './dto/challenge.dto';
+import { ChoiceMadeDto } from './dto/choice-made.dto';
+import { ChoiceDto } from './dto/choice.dto';
+import { ContentChallengeDto } from './dto/content-challenge.dto';
+import { ContentExpositionDto } from './dto/content-exposition.dto';
 import { EpilogueDto, MajorChoiceDto, MetaAlignment } from './dto/epilogue.dto';
-import { GameStateDto } from 'src/users/dto/gamestate.dto';
-import { DungeonsDragonsAlignment } from './enum/alignment.enum';
+import { ViewDto } from './dto/view.dto';
 import { ActionEntity } from './entity/action.entity';
+import { CampaignEntity } from './entity/campaign.entity';
+import { ChoiceEntity } from './entity/choice.entity';
 import { ViewEntity } from './entity/view.entity';
+import { DungeonsDragonsAlignment } from './enum/alignment.enum';
+import { ChallengeType } from './enum/challenge.enum';
+import { ContentType } from './enum/content.enum';
 import {
   CampaignChoice,
   CampaignEndings,
@@ -24,9 +27,6 @@ import {
   PublicChoice,
   PublicChoiceSelection,
 } from './interfaces/epilogue.interface';
-import { ChoiceEntity } from './entity/choice.entity';
-import { ChoiceMadeDto } from './dto/choice-made.dto';
-import { ChoiceDto } from './dto/choice.dto';
 
 @Injectable()
 export class CampaignService {

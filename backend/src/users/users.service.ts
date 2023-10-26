@@ -25,6 +25,7 @@ import { catchError, firstValueFrom } from 'rxjs';
 import { AxiosError } from 'axios';
 import { RefreshToken } from './entity/token.entity';
 import { ClassStats } from './interfaces/class.interface';
+import { CampaignService } from 'src/campaign/campaign.service';
 
 @Injectable()
 export class UsersService {
@@ -38,6 +39,7 @@ export class UsersService {
     @InjectRepository(RefreshToken)
     private readonly tokenRepo: Repository<RefreshToken>,
     private readonly httpService: HttpService,
+    private readonly campaignService: CampaignService,
   ) {}
 
   toUserDto(data: UserEntity): UserDto {
@@ -59,16 +61,6 @@ export class UsersService {
     };
   }
 
-  toSaveSnapshotList(data: UserSaveEntity[]): SaveSnapshotDto[] {
-    return data.map((saveFile) => {
-      return {
-        id: saveFile.id,
-        filename: saveFile.filename,
-        last_played: saveFile.updatedAt,
-      };
-    });
-  }
-
   toCharacterDto(data: CharacterEntity): CharacterDto {
     return {
       name: data.name,
@@ -77,6 +69,118 @@ export class UsersService {
       intelligence: data.intelligence,
       luck: data.luck,
     };
+  }
+
+  toPlanetDto(planetData: any): Planet {
+    if (!planetData) return;
+    return {
+      name: planetData.name,
+      diameter: `${planetData.diameter} km`,
+      hours_in_a_day: planetData.rotation_period,
+      days_in_a_year: planetData.orbital_period,
+      gravity_in_Gs: `${planetData.gravity} G(s)`,
+      population: Number(planetData.population).toLocaleString(),
+      climate: planetData.climate,
+      terrain: planetData.terrain,
+    };
+  }
+
+  toSpeciesDto(speciesData: any[]): Species[] {
+    if (!speciesData) return [];
+    return speciesData.map((species: any): Species => {
+      return {
+        name: species.name,
+        language: species.language,
+        origin_world: species.homeworld,
+        classification: species.classification,
+        designation: species.designation,
+      };
+    });
+  }
+
+  toVehiclesDto(vehicleData: any[]): Vehicle[] {
+    if (!vehicleData) return [];
+    return vehicleData.map((vehicle: any): Vehicle => {
+      return {
+        name: vehicle.name,
+        make: vehicle.manufacturer,
+        model: vehicle.model,
+        class: vehicle.vehicle_class,
+        top_speed: `${vehicle.max_atmosphering_speed} km/h`,
+      };
+    });
+  }
+
+  toStarshipsDto(starshipData: any[]): Starship[] {
+    if (!starshipData) return [];
+    return starshipData.map((starship: any): Starship => {
+      return {
+        name: starship.name,
+        make: starship.manufacturer,
+        model: starship.model,
+        class: starship.starship_class,
+        hyperdrive_rating: starship.hyperdrive_rating,
+      };
+    });
+  }
+
+  toCharacterBioDto(data: any): CharacterBioDto {
+    const characterBioDto: CharacterBioDto = {
+      name: data.name,
+      class: this.getAClass(),
+      height: data.height,
+      mass: data.mass,
+      hair_color: data.hair_color,
+      skin_color: data.skin_color,
+      eye_color: data.eye_color,
+      birth_year: data.birth_year,
+      gender: data.gender,
+      homeworld: this.toPlanetDto(data.homeworld_resolved),
+      species: this.toSpeciesDto(data.species_resolved),
+      vehicles: this.toVehiclesDto(data.vehicles_resolved),
+      starships: this.toStarshipsDto(data.starships_resolved),
+      bioUrl: data.url,
+    };
+    return characterBioDto;
+  }
+
+  getAClass(): ClassName {
+    const classes: ClassName[] = ['Brute', 'Wizard', 'Gambler'];
+    const random_index = Math.floor(Math.random() * 3);
+    return classes[random_index];
+  }
+
+  getRandomUniqueCharacterIds(): number[] {
+    const CHARACTER_ID_MAX = 82;
+    const swapi_ids = new Set<number>();
+    while (swapi_ids.size !== 3) {
+      swapi_ids.add(Math.floor(Math.random() * CHARACTER_ID_MAX) + 1);
+    }
+    return Array.from(swapi_ids.values());
+  }
+
+  getStatsByClass(characterClass: ClassName): ClassStats {
+    if (characterClass === 'Brute') {
+      return {
+        strength: 10,
+        intelligence: 2,
+        luck: 6,
+      };
+    }
+    if (characterClass === 'Wizard') {
+      return {
+        strength: 2,
+        intelligence: 10,
+        luck: 6,
+      };
+    }
+    if (characterClass === 'Gambler') {
+      return {
+        strength: 4,
+        intelligence: 4,
+        luck: 10,
+      };
+    }
   }
 
   async comparePasswords(password: string, hash: string) {
@@ -166,7 +270,32 @@ export class UsersService {
       where: { user: { username: user } },
     });
 
-    return this.toSaveSnapshotList(saveData);
+    if (saveData.length <= 0) {
+      throw new HttpException(
+        'User has no save files.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const saveFiles: SaveSnapshotDto[] = [];
+    for (const saveFile of saveData) {
+      const campaign = await this.campaignService.getCampaignById(
+        saveFile.campaign_id,
+      );
+      const character = await this.characterRepo.findOne({
+        where: { id: saveFile.character_id },
+      });
+
+      saveFiles.push({
+        id: saveFile.id,
+        filename: saveFile.filename,
+        campaign_name: campaign.name,
+        character_name: character.name,
+        last_played: saveFile.updatedAt,
+      });
+    }
+
+    return saveFiles;
   }
 
   async createSaveFile(username: string, saveDto: SaveDto) {
@@ -239,85 +368,6 @@ export class UsersService {
     return data;
   }
 
-  getAClass(): ClassName {
-    const classes: ClassName[] = ['Brute', 'Wizard', 'Gambler'];
-    const random_index = Math.floor(Math.random() * 3);
-    return classes[random_index];
-  }
-
-  toPlanetDto(planetData: any): Planet {
-    if (!planetData) return;
-    return {
-      name: planetData.name,
-      diameter: `${planetData.diameter} km`,
-      hours_in_a_day: planetData.rotation_period,
-      days_in_a_year: planetData.orbital_period,
-      gravity_in_Gs: `${planetData.gravity} G(s)`,
-      population: Number(planetData.population).toLocaleString(),
-      climate: planetData.climate,
-      terrain: planetData.terrain,
-    };
-  }
-
-  toSpeciesDto(speciesData: any[]): Species[] {
-    if (!speciesData) return [];
-    return speciesData.map((species: any): Species => {
-      return {
-        name: species.name,
-        language: species.language,
-        origin_world: species.homeworld,
-        classification: species.classification,
-        designation: species.designation,
-      };
-    });
-  }
-
-  toVehiclesDto(vehicleData: any[]): Vehicle[] {
-    if (!vehicleData) return [];
-    return vehicleData.map((vehicle: any): Vehicle => {
-      return {
-        name: vehicle.name,
-        make: vehicle.manufacturer,
-        model: vehicle.model,
-        class: vehicle.vehicle_class,
-        top_speed: `${vehicle.max_atmosphering_speed} km/h`,
-      };
-    });
-  }
-
-  toStarshipsDto(starshipData: any[]): Starship[] {
-    if (!starshipData) return [];
-    return starshipData.map((starship: any): Starship => {
-      return {
-        name: starship.name,
-        make: starship.manufacturer,
-        model: starship.model,
-        class: starship.starship_class,
-        hyperdrive_rating: starship.hyperdrive_rating,
-      };
-    });
-  }
-
-  toCharacterBioDto(data: any): CharacterBioDto {
-    const characterBioDto: CharacterBioDto = {
-      name: data.name,
-      class: this.getAClass(),
-      height: data.height,
-      mass: data.mass,
-      hair_color: data.hair_color,
-      skin_color: data.skin_color,
-      eye_color: data.eye_color,
-      birth_year: data.birth_year,
-      gender: data.gender,
-      homeworld: this.toPlanetDto(data.homeworld_resolved),
-      species: this.toSpeciesDto(data.species_resolved),
-      vehicles: this.toVehiclesDto(data.vehicles_resolved),
-      starships: this.toStarshipsDto(data.starships_resolved),
-      bioUrl: data.url,
-    };
-    return characterBioDto;
-  }
-
   async normalizeToCharacterBioDto(
     characters: any[],
   ): Promise<CharacterBioDto[]> {
@@ -342,15 +392,6 @@ export class UsersService {
     }
 
     return characters.map((character) => this.toCharacterBioDto(character));
-  }
-
-  getRandomUniqueCharacterIds(): number[] {
-    const CHARACTER_ID_MAX = 82;
-    const swapi_ids = new Set<number>();
-    while (swapi_ids.size !== 3) {
-      swapi_ids.add(Math.floor(Math.random() * CHARACTER_ID_MAX) + 1);
-    }
-    return Array.from(swapi_ids.values());
   }
 
   async getCharacterSet(): Promise<CharacterBioDto[]> {
@@ -420,30 +461,6 @@ export class UsersService {
     }
 
     return this.toCharacterFullDto(characterData);
-  }
-
-  getStatsByClass(characterClass: ClassName): ClassStats {
-    if (characterClass === 'Brute') {
-      return {
-        strength: 10,
-        intelligence: 2,
-        luck: 6,
-      };
-    }
-    if (characterClass === 'Wizard') {
-      return {
-        strength: 2,
-        intelligence: 10,
-        luck: 6,
-      };
-    }
-    if (characterClass === 'Gambler') {
-      return {
-        strength: 4,
-        intelligence: 4,
-        luck: 10,
-      };
-    }
   }
 
   async createCharacter(characterCreation: CharacterCreationDto) {

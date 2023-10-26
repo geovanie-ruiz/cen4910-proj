@@ -1,11 +1,11 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { GameStateDto } from 'src/users/dto/gamestate.dto';
 import { CampaignService } from './campaign.service';
 import { CampaignDto } from './dto/campaign.dto';
-import { EpilogueDto } from './dto/epilogue.dto';
-import { GameStateDto } from 'src/users/dto/gamestate.dto';
 import { ChoiceMadeDto } from './dto/choice-made.dto';
 import { ChoiceDto } from './dto/choice.dto';
+import { EpilogueDto } from './dto/epilogue.dto';
 
 @ApiTags('Campaign')
 @Controller('campaign')
