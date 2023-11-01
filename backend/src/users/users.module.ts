@@ -7,7 +7,7 @@ import { UsersController } from './users.controller';
 import { CharacterEntity } from './entity/character.entity';
 import { HttpModule } from '@nestjs/axios';
 import { RefreshToken } from './entity/token.entity';
-import { CampaignModule } from 'src/campaign/campaign.module';
+import { CampaignModule } from '../campaign/campaign.module';
 
 @Module({
   imports: [
