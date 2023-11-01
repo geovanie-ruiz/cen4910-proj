@@ -25,7 +25,9 @@ import { catchError, firstValueFrom } from 'rxjs';
 import { AxiosError } from 'axios';
 import { RefreshToken } from './entity/token.entity';
 import { ClassStats } from './interfaces/class.interface';
-import { CampaignService } from 'src/campaign/campaign.service';
+import { CampaignService } from '../campaign/campaign.service';
+
+const numFormatter = Intl.NumberFormat('en-US');
 
 @Injectable()
 export class UsersService {
@@ -75,11 +77,11 @@ export class UsersService {
     if (!planetData) return;
     return {
       name: planetData.name,
-      diameter: `${planetData.diameter} km`,
+      diameter: `${numFormatter.format(planetData.diameter)} km`,
       hours_in_a_day: planetData.rotation_period,
       days_in_a_year: planetData.orbital_period,
       gravity_in_Gs: `${planetData.gravity} G(s)`,
-      population: Number(planetData.population).toLocaleString(),
+      population: numFormatter.format(planetData.population),
       climate: planetData.climate,
       terrain: planetData.terrain,
     };
@@ -91,7 +93,7 @@ export class UsersService {
       return {
         name: species.name,
         language: species.language,
-        origin_world: species.homeworld,
+        origin_world: this.toPlanetDto(species.homeworld_resolved),
         classification: species.classification,
         designation: species.designation,
       };
@@ -249,8 +251,8 @@ export class UsersService {
       email,
     });
 
-    await this.userRepo.save(user);
-    return this.toUserDto(user);
+    const savedUser = await this.userRepo.save(user);
+    return this.toUserDto(savedUser);
   }
 
   async getSaveFile(user: string, saveId: number): Promise<SaveDto> {
@@ -371,17 +373,28 @@ export class UsersService {
   async normalizeToCharacterBioDto(
     characters: any[],
   ): Promise<CharacterBioDto[]> {
-    for (const character of characters) {
+    for (let i = 0; i < characters.length; i++) {
+      const character = characters[i];
+
       character.homeworld_resolved = await this.getSwapiData(
         character.homeworld,
       );
 
       character.species_resolved = await Promise.all(
-        character.species.map((species: string) => this.getSwapiData(species)),
+        character.species.map((species: string) =>
+          this.getSwapiData(species)
+        ),
       );
 
+      for (let j = 0; j < character.species_resolved.length; j++) {
+        const homeworld = character.species_resolved[j].homeworld;
+        character.species_resolved[j].homeworld_resolved = await this.getSwapiData(homeworld);
+      }
+
       character.vehicles_resolved = await Promise.all(
-        character.vehicles.map((vehicle: string) => this.getSwapiData(vehicle)),
+        character.vehicles.map((vehicle: string) =>
+          this.getSwapiData(vehicle)
+        ),
       );
 
       character.starships_resolved = await Promise.all(
@@ -415,6 +428,11 @@ export class UsersService {
         this.getSwapiData(species),
       ),
     );
+
+    for (let i = 0; i < character_data.species_resolved.length; i++) {
+      const homeworld = character_data.species_resolved[i].homeworld;
+      character_data.species_resolved[i].homeworld_resolved = await this.getSwapiData(homeworld);
+    }
 
     character_data.vehicles_resolved = await Promise.all(
       character_data.vehicles.map((vehicle: string) =>

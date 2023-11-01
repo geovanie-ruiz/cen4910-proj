@@ -1,15 +1,15 @@
-import { Body, Controller, Post, HttpCode, HttpStatus } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { LoginUserDto } from '../users/dto/user-login.dto';
+import { RefreshUserDto } from '../users/dto/user-refresh.dto';
+import { CreateUserDto } from '../users/dto/user.create.dto';
 import { AuthService } from './auth.service';
 import { Public } from './decorators/public.decorator';
-import { LoginUserDto } from '../users/dto/user-login.dto';
-import { CreateUserDto } from '../users/dto/user.create.dto';
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { RefreshUserDto } from 'src/users/dto/user-refresh.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   @Public()
   @HttpCode(HttpStatus.OK)

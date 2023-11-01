@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { GameStateDto } from 'src/users/dto/gamestate.dto';
+import { GameStateDto } from '../users/dto/gamestate.dto';
 import { CampaignService } from './campaign.service';
 import { CampaignDto } from './dto/campaign.dto';
 import { ChoiceMadeDto } from './dto/choice-made.dto';

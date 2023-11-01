@@ -12,7 +12,7 @@ export class Planet {
 
   @ApiProperty()
   @IsNotEmpty()
-  hours_in_a_day: number;
+  hours_in_a_day: string;
 
   @ApiProperty()
   @IsNotEmpty()

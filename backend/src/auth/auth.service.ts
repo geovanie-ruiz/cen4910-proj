@@ -3,7 +3,7 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { LoginUserDto } from '../users/dto/user-login.dto';
 import { CreateUserDto } from '../users/dto/user.create.dto';
-import { RefreshUserDto } from 'src/users/dto/user-refresh.dto';
+import { RefreshUserDto } from '../users/dto/user-refresh.dto';
 import { jwtConstants } from './constants/constants';
 
 export interface LoginStatus {

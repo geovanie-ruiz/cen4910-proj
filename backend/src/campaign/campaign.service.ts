@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { GameStateDto } from 'src/users/dto/gamestate.dto';
+import { GameStateDto } from '../users/dto/gamestate.dto';
 import { Repository } from 'typeorm';
 import { ActionCheckDto } from './dto/action-check.dto';
 import { ActionChoiceDto } from './dto/action-choice.dto';
