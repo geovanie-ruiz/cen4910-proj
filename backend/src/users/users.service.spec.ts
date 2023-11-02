@@ -14,7 +14,7 @@ import { CharacterEntity } from './entity/character.entity';
 import { UserSaveEntity } from './entity/save.entity';
 import { RefreshToken } from './entity/token.entity';
 import { UserEntity } from './entity/user.entity';
-import * as Mocks from './tests/mock-data';
+import * as Mocks from './tests/mock-data.mock';
 import { UsersService } from './users.service';
 
 describe('UsersService', () => {
