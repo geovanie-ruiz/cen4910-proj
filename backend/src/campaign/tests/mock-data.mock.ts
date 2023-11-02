@@ -1036,3 +1036,12 @@ export const choicesDto = [
 		is_success: false,
 	},
 ] as ChoiceDto[];
+
+export const choiceDto = {
+	choice_made_id: 1,
+} as ChoiceDto;
+
+export const checkDto = {
+	choice_made_id: 1,
+	is_success: true,
+} as ChoiceDto;

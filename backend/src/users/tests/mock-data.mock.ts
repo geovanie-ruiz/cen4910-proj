@@ -1,8 +1,10 @@
 import { CampaignEntity } from "src/campaign/entity/campaign.entity";
 import { CharacterBioDto, Planet, Species, Starship, Vehicle } from "../dto/character-bio.dto";
+import { CharacterCreationDto } from "../dto/character-creation.dto";
 import { CharacterFullDto } from "../dto/character-full.dto";
 import { CharacterDto } from "../dto/character.dto";
 import { SaveSnapshotDto } from "../dto/save-snapshot.dto";
+import { SaveUpdateDto } from "../dto/save-update.dto";
 import { SaveDto } from "../dto/save.dto";
 import { LoginUserDto } from "../dto/user-login.dto";
 import { CreateUserDto } from "../dto/user.create.dto";
@@ -142,6 +144,11 @@ export const saveDto = {
 	last_sequence_id: 1,
 } as SaveDto;
 
+export const saveUpdateDto = {
+	save_file_id: 1,
+	last_sequence_id: 1,
+} as SaveUpdateDto;
+
 export const saveSnapshotDtos = [
 	{
 		id: 1,
@@ -241,6 +248,10 @@ export const characterBioDto = {
 	bioUrl: 'https://swapi.dev/api/people/1/',
 } as CharacterBioDto;
 
+export const characterBiosDto = [
+	characterBioDto,
+] as CharacterBioDto[];
+
 export const characterDto = {
 	name: 'A New Character',
 	class: 'Gambler',
@@ -248,6 +259,12 @@ export const characterDto = {
 	intelligence: 4,
 	luck: 10,
 } as CharacterDto;
+
+export const createCharacterDto = {
+	name: 'A New Character',
+	class: 'Gambler',
+	bioUrl: 'https://swapi.dev/api/people/1/',
+} as CharacterCreationDto;
 
 /*
 	Mock SWAPI Responses
@@ -344,4 +361,10 @@ export const swapi_starship = {
 	"MGLT": "100",
 	"starship_class": "Starfighter",
 	"url": "https://swapi.dev/api/starships/12/"
+};
+
+export const req = {
+	user: {
+		username: 'username',
+	},
 };
