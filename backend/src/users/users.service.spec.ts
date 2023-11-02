@@ -2,9 +2,9 @@ import { HttpModule, HttpService } from '@nestjs/axios';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import * as bcrypt from 'bcrypt';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { Repository } from 'typeorm';
 import { CampaignService } from '../campaign/campaign.service';
 import { CharacterBioDto } from './dto/character-bio.dto';
@@ -14,7 +14,7 @@ import { CharacterEntity } from './entity/character.entity';
 import { UserSaveEntity } from './entity/save.entity';
 import { RefreshToken } from './entity/token.entity';
 import { UserEntity } from './entity/user.entity';
-import * as Mocks from './tests/mock-data';
+import * as Mocks from './tests/mock-data.mock';
 import { UsersService } from './users.service';
 
 describe('UsersService', () => {
@@ -134,22 +134,26 @@ describe('UsersService', () => {
   it('converts swapi planet to dto', async () => {
     const planet = service.toPlanetDto(Mocks.swapi_planet);
     expect(planet).toEqual(Mocks.planet);
+    expect(service.toPlanetDto(null)).toEqual(undefined);
   });
 
   it('converts swapi species to dto', async () => {
     jest.spyOn(service, 'toPlanetDto').mockReturnValue(Mocks.species_planet);
     const species = service.toSpeciesDto([Mocks.swapi_species,]);
     expect(species).toEqual(Mocks.species);
+    expect(service.toSpeciesDto(null)).toEqual([]);
   });
 
   it('converts swapi vehicles to dto', async () => {
     const vehicles = service.toVehiclesDto([Mocks.swapi_vehicle,]);
     expect(vehicles).toEqual(Mocks.vechicles);
+    expect(service.toVehiclesDto(null)).toEqual([]);
   });
 
   it('converts swapi spaceships to dto', async () => {
     const spaceships = service.toStarshipsDto([Mocks.swapi_starship,]);
     expect(spaceships).toEqual(Mocks.starships);
+    expect(service.toStarshipsDto(null)).toEqual([]);
   });
 
   it('converts swapi person to dto', async () => {
@@ -231,9 +235,7 @@ describe('UsersService', () => {
   });
 
   it('fails to retrieve refresh tokens', async () => {
-    jest.spyOn(service, 'getRefreshToken').mockRejectedValue(
-      new HttpException('Access token not found', HttpStatus.BAD_REQUEST)
-    );
+    jest.spyOn(refreshTokenRepository, 'findOne').mockResolvedValue(null);
 
     try {
       await service.getRefreshToken('token');
@@ -249,9 +251,7 @@ describe('UsersService', () => {
   });
 
   it('fails to retrieve a user', async () => {
-    jest.spyOn(service, 'getUserId').mockRejectedValue(
-      new HttpException('User not found', HttpStatus.BAD_REQUEST)
-    );
+    jest.spyOn(userEntityRepository, 'findOne').mockResolvedValue(null);
 
     try {
       await service.getUserId('username');
@@ -269,9 +269,7 @@ describe('UsersService', () => {
   });
 
   it('fails to retrieve a user by login', async () => {
-    jest.spyOn(userEntityRepository, 'findOne').mockRejectedValueOnce(
-      new HttpException('User not found', HttpStatus.BAD_REQUEST)
-    );
+    jest.spyOn(userEntityRepository, 'findOne').mockResolvedValueOnce(null);
     jest.spyOn(service, 'comparePasswords').mockResolvedValue(false);
 
     try {
@@ -399,9 +397,7 @@ describe('UsersService', () => {
   });
 
   it('fails to get a character by Id', async () => {
-    jest.spyOn(characterEntityRepository, 'findOne').mockRejectedValue(
-      new HttpException('Character not found', HttpStatus.BAD_REQUEST)
-    );
+    jest.spyOn(characterEntityRepository, 'findOne').mockResolvedValue(null);
 
     try {
       await service.getCharacter(1);
@@ -445,23 +441,32 @@ describe('UsersService', () => {
   });
 
   it('fails to get Star Wars API data', async () => {
-    const error: AxiosResponse<any> = {
-      data: { error: 'Mock error' },
-      headers: {},
-      status: 500,
-      statusText: '',
-      config: undefined
+    const axiosError: AxiosError<any> = {
+      isAxiosError: true,
+      name: 'Mock Error',
+      message: 'Mock Error',
+      toJSON() {
+        return {};
+      },
+      response: {
+        status: 500,
+        statusText: '',
+        config: undefined,
+        headers: undefined,
+        data: 'Mock Error',
+      },
     };
 
-    jest.spyOn(httpService, 'get')
-      .mockImplementationOnce(() => of(error))
+    jest.spyOn(httpService, 'get').mockReturnValue(throwError(() => axiosError));
+    const log = jest.spyOn(console, 'log').mockImplementation(() => { });
 
     try {
       await service.getSwapiData('');
     } catch (error) {
+      expect(log).toHaveBeenCalled();
       expect(error).toBeInstanceOf(HttpException);
       expect(error.status).toEqual(HttpStatus.INTERNAL_SERVER_ERROR);
-      expect(error.message).toEqual('Swapi Error: Mock error');
+      expect(error.message).toEqual('Swapi Error: Mock Error');
     }
   });
 
@@ -537,9 +542,7 @@ describe('UsersService', () => {
   });
 
   it('fails to retrieve a full character sheet', async () => {
-    jest.spyOn(characterEntityRepository, 'findOne').mockRejectedValue(
-      new HttpException('Character not found', HttpStatus.BAD_REQUEST)
-    );
+    jest.spyOn(characterEntityRepository, 'findOne').mockResolvedValue(null);
 
     try {
       await service.getCharacterFull(1);

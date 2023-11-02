@@ -9,5 +9,5 @@ export class ChoiceDto {
   @ApiProperty({
     description: 'True if a check roll succeeded, Null if no check occurred.',
   })
-  is_success: boolean | null;
+  is_success?: boolean | null;
 }

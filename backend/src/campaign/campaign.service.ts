@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { GameStateDto } from '../users/dto/gamestate.dto';
 import { Repository } from 'typeorm';
+import { GameStateDto } from '../users/dto/gamestate.dto';
 import { ActionCheckDto } from './dto/action-check.dto';
 import { ActionChoiceDto } from './dto/action-choice.dto';
 import { CampaignDto } from './dto/campaign.dto';
@@ -35,13 +35,13 @@ export class CampaignService {
     private readonly campaignRepo: Repository<CampaignEntity>,
     @InjectRepository(ChoiceEntity)
     private readonly choiceRepo: Repository<ChoiceEntity>,
-  ) {}
+  ) { }
 
-  private normalizeToCampaignDto(data: CampaignEntity[]): CampaignDto[] {
+  normalizeToCampaignDto(data: CampaignEntity[]): CampaignDto[] {
     return data.map((campaign) => this.toCampaignDto(campaign));
   }
 
-  private toCampaignDto(data: CampaignEntity): CampaignDto {
+  toCampaignDto(data: CampaignEntity): CampaignDto {
     const { id, name, views } = data;
 
     const viewsData: ViewDto[] = views.map((view) => {
@@ -147,7 +147,9 @@ export class CampaignService {
   }
 
   toAlignmentText(good: number, neutral: number, evil: number): MetaAlignment {
-    if (good === evil) return 'Neutral';
+    const moralChoicesMade = good + evil > 0;
+    const moralChoicesBalanced = good - evil === 0;
+    if (moralChoicesMade && moralChoicesBalanced) return 'Neutral';
 
     switch (Math.max(good, neutral, evil)) {
       case good:
@@ -189,10 +191,9 @@ export class CampaignService {
     campaignChoices: CampaignChoice[],
   ) {
     const alignments: DungeonsDragonsAlignment[] = [];
-
     for (let i = 0; i < campaignChoices.length; i++) {
       const alignment = campaignChoices[i].options.find(
-        (option) => option.choice_id === choices[i].choice_made_id,
+        (option) => option.choice_id === choices[i].choice_made_id
       ).alignment;
       alignment && alignments.push(alignment);
     }
@@ -335,7 +336,7 @@ export class CampaignService {
     campaign_id: number,
     playerChoices: ChoiceEntity[],
     campaignChoices: CampaignChoice[],
-  ) {
+  ): Promise<PublicChoice[]> {
     const choices: PublicChoice[] = [];
 
     for (let i = 0; i < campaignChoices.length; i++) {
@@ -461,15 +462,12 @@ export class CampaignService {
       order: { sequence_id: 'ASC' },
     });
 
-    if (!playerChoices) {
+    if (playerChoices.length <= 0) {
       throw new HttpException(
         'No choices made within the campaign.',
         HttpStatus.BAD_REQUEST,
       );
     }
-
-    console.log('campaign choice count', campaignChoices.length);
-    console.log('player choices', playerChoices.length);
 
     if (campaignChoices.length !== playerChoices.length) {
       throw new HttpException(
@@ -530,6 +528,19 @@ export class CampaignService {
     return choiceMade;
   }
 
+  toChoicesDto(choices: ChoiceEntity[]): ChoiceDto[] {
+    return choices.map((choice): ChoiceDto => {
+      if (choice?.is_success || choice.is_success !== undefined) {
+        return {
+          choice_made_id: choice.choice_made_id,
+          is_success: choice.is_success,
+        };
+      } else {
+        return { choice_made_id: choice.choice_made_id, };
+      }
+    });
+  }
+
   async getChoicesByCampaign(
     campaign: number,
     character: number,
@@ -548,6 +559,6 @@ export class CampaignService {
       throw new HttpException('Choices do not exist.', HttpStatus.BAD_REQUEST);
     }
 
-    return choicesMade;
+    return this.toChoicesDto(choicesMade);
   }
 }

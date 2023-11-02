@@ -1,16 +1,11 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { UserDto } from './dto/user.dto';
-import { UserEntity } from './entity/user.entity';
-import { CreateUserDto } from './dto/user.create.dto';
-import { LoginUserDto } from './dto/user-login.dto';
+import { AxiosError } from 'axios';
 import { compare } from 'bcrypt';
-import { UserSaveEntity } from './entity/save.entity';
-import { SaveDto } from './dto/save.dto';
-import { SaveSnapshotDto } from './dto/save-snapshot.dto';
-import { CharacterEntity } from './entity/character.entity';
-import { CharacterDto, ClassName } from './dto/character.dto';
+import { catchError, firstValueFrom } from 'rxjs';
+import { Repository } from 'typeorm';
+import { CampaignService } from '../campaign/campaign.service';
 import {
   CharacterBioDto,
   Planet,
@@ -20,12 +15,17 @@ import {
 } from './dto/character-bio.dto';
 import { CharacterCreationDto } from './dto/character-creation.dto';
 import { CharacterFullDto } from './dto/character-full.dto';
-import { HttpService } from '@nestjs/axios';
-import { catchError, firstValueFrom } from 'rxjs';
-import { AxiosError } from 'axios';
+import { CharacterDto, ClassName } from './dto/character.dto';
+import { SaveSnapshotDto } from './dto/save-snapshot.dto';
+import { SaveDto } from './dto/save.dto';
+import { LoginUserDto } from './dto/user-login.dto';
+import { CreateUserDto } from './dto/user.create.dto';
+import { UserDto } from './dto/user.dto';
+import { CharacterEntity } from './entity/character.entity';
+import { UserSaveEntity } from './entity/save.entity';
 import { RefreshToken } from './entity/token.entity';
+import { UserEntity } from './entity/user.entity';
 import { ClassStats } from './interfaces/class.interface';
-import { CampaignService } from '../campaign/campaign.service';
 
 const numFormatter = Intl.NumberFormat('en-US');
 
@@ -42,7 +42,7 @@ export class UsersService {
     private readonly tokenRepo: Repository<RefreshToken>,
     private readonly httpService: HttpService,
     private readonly campaignService: CampaignService,
-  ) {}
+  ) { }
 
   toUserDto(data: UserEntity): UserDto {
     const { id, username, email } = data;
