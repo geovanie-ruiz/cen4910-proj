@@ -7,7 +7,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 
-@Global()
 @Module({
   controllers: [AuthController],
   providers: [AuthService],
