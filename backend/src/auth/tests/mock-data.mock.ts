@@ -1,4 +1,4 @@
-import { RefreshUserDto } from 'src/users/dto/user-refresh.dto';
+import { RefreshUserDto } from '../../users/dto/user-refresh.dto';
 import { LoginUserDto } from '../../users/dto/user-login.dto';
 import { CreateUserDto } from '../../users/dto/user.create.dto';
 import { UserDto } from '../../users/dto/user.dto';

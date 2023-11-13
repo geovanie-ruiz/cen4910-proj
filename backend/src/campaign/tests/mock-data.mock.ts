@@ -1,4 +1,4 @@
-import { GameStateDto } from "src/users/dto/gamestate.dto";
+import { GameStateDto } from "../users/dto/gamestate.dto";
 import { CampaignDto } from "../dto/campaign.dto";
 import { ChoiceMadeDto } from "../dto/choice-made.dto";
 import { ChoiceDto } from "../dto/choice.dto";
