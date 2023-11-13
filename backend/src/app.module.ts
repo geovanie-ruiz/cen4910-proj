@@ -24,11 +24,6 @@ import * as Joi from 'joi';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
-      validationSchema: Joi.object(schema:{
-        NODE_ENV: Joi.string().default(value:'development'),
-        DB_URL: Joi.string().required(),
-        DB_SSL: Joi.boolean().default(value:false),
-      }),
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
