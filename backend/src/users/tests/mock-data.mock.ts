@@ -1,4 +1,4 @@
-import { CampaignEntity } from "../campaign/entity/campaign.entity";
+import { CampaignEntity } from "../../campaign/entity/campaign.entity";
 import { CharacterBioDto, Planet, Species, Starship, Vehicle } from "../dto/character-bio.dto";
 import { CharacterCreationDto } from "../dto/character-creation.dto";
 import { CharacterFullDto } from "../dto/character-full.dto";
