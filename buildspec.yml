@@ -3,9 +3,8 @@ version: 0.2
 phases:
   build:
     commands:
-       - npm install axios --save
+       $ npm i --save @nestjs/axios axios
        - npm audit fix --force
-       - npm fund
        - npm ci && npm run build # clean install (npm ci) and build (npm run build)
 
 artifacts:
