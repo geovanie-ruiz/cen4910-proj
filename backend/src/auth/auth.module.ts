@@ -7,6 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 
+@Global()
 @Module({
   controllers: [AuthController],
   providers: [AuthService],
@@ -14,7 +15,6 @@ import * as Joi from 'joi';
     UsersModule,
     AuthModule,
     JwtModule.register({
-      global: true,
       secret: jwtConstants.secret,
       signOptions: {
         expiresIn: '24h', // extended for now
