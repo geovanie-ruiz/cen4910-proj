@@ -11,10 +11,6 @@ import * as Joi from 'joi';
   controllers: [AuthController],
   providers: [AuthService],
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: '.env',
-    }),
     UsersModule,
     AuthModule,
     JwtModule.register({
