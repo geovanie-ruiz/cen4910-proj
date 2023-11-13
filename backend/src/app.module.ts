@@ -19,8 +19,6 @@ import { ChoiceEntity } from './campaign/entity/choice.entity';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
-import { AuthModule } from './auth/auth.module';
-import { TransactionsModule } from './transactions/transactions.module';
 import * as Joi from 'joi';
 
 @Module({
