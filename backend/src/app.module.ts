@@ -16,6 +16,12 @@ import { ActionEntity } from './campaign/entity/action.entity';
 import { CharacterEntity } from './users/entity/character.entity';
 import { RefreshToken } from './users/entity/token.entity';
 import { ChoiceEntity } from './campaign/entity/choice.entity';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { DatabaseModule } from './database/database.module';
+import { AuthModule } from './auth/auth.module';
+import { TransactionsModule } from './transactions/transactions.module';
+import * as Joi from 'joi';
 
 @Module({
   imports: [
