@@ -16,6 +16,8 @@ import { ActionEntity } from './campaign/entity/action.entity';
 import { CharacterEntity } from './users/entity/character.entity';
 import { RefreshToken } from './users/entity/token.entity';
 import { ChoiceEntity } from './campaign/entity/choice.entity';
+import { DatabaseModule } from './database/database.module';
+import * as Joi from 'joi';
 
 @Module({
   imports: [
