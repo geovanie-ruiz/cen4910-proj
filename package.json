@@ -1,7 +1,7 @@
 {
   "name": "starwars-api",
   "version": "0.0.1",
-  "description": "",
+  "description": "Combined repository for all three groups.",
   "author": "",
   "private": true,
   "license": "UNLICENSED",
@@ -85,5 +85,10 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "aws-branch"
   }
 }
