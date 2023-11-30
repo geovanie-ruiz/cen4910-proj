@@ -34,7 +34,7 @@ export declare class UsersService {
     getAClass(): ClassName;
     getRandomUniqueCharacterIds(): number[];
     getStatsByClass(characterClass: ClassName): ClassStats;
-    comparePasswords(password: string, hash: string): Promise<any>;
+    comparePasswords(password: string, hash: string): Promise<boolean>;
     createRefreshToken(user: string, token: string): Promise<RefreshToken>;
     getRefreshToken(token: string): Promise<RefreshToken>;
     getUserId(username: string): Promise<UserEntity>;
