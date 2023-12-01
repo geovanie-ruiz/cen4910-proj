@@ -22,6 +22,7 @@
     "typeorm:create-migration": "npm run typeorm -- migration:create ./migrations/$npm_config_name",
     "typeorm:run-migrations": "npm run typeorm migration:run -- -d ./typeorm.config.ts",
     "typeorm:revert-migrations": "npm run typeorm migration:revert -- -d ./typeorm.config.ts"
+    "deploy": "npm i && npm run build && npm run start:prod"
   },
   "dependencies": {
     "@nestjs/axios": "^3.0.0",
